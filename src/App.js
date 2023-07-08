@@ -1,23 +1,48 @@
 import logo from './logo.svg';
 import './App.css';
+import axios from "axios"
+import {useEffect, useState} from  "react"
+import { MovieCard } from './Component/Movie/MovieCard';
+import Search from './Component/Movie/Search';
 
 function App() {
+  const [movie,setmovie]=useState([])
+  const getmovie=async ()=>{
+    try{
+      const {data}= await axios.get("https://movies-app.prakashsakari.repl.co/api/movies")
+      // console.log(data)
+      setmovie(data)
+
+    }catch(err){
+      console.log(err)
+
+    }
+  }
+ 
+  useEffect(()=>{
+        getmovie()
+  },[])
+  ///internal styling/////////////////////
+  const header={
+    textAlign:"center",
+    marginTop:"10px",
+   
+  }
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1 style={header}>Movie Website</h1>
+      <div>
+      
+    </div>
+      <main className='main'>
+      {
+            movie && movie.length>0 && movie.map((movie)=><MovieCard key={movie.id} movie={movie}/>)
+          }
+        
+      </main>
+          
+          
     </div>
   );
 }
